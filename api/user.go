@@ -2,7 +2,7 @@ package api
 
 import (
 	"database/sql"
-	"fmt"
+	"errors"
 	"net/http"
 	"time"
 
@@ -95,7 +95,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 	user, err := server.store.GetUser(ctx, req.Username)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusUnauthorized, errorResponse(fmt.Errorf("wrong credentials")))
+			ctx.JSON(http.StatusUnauthorized, errorResponse(errors.New("wrong credentials")))
 			return
 		}
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
@@ -103,7 +103,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 
 	err = util.CheckPassword(req.Password, user.HashedPassword)
 	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, errorResponse(fmt.Errorf("wrong credentials")))
+		ctx.JSON(http.StatusUnauthorized, errorResponse(errors.New("wrong credentials")))
 		return
 	}
 
