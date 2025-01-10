@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/mail"
 	"regexp"
+
+	"github.com/ahmadjavaidwork/simple-bank/util"
 )
 
 var (
@@ -49,6 +51,13 @@ func ValidateFullName(value string) error {
 	}
 	if !isValidFullName(value) {
 		return fmt.Errorf("must contain only letters or spaces")
+	}
+	return nil
+}
+
+func ValidateCurrency(value string) error {
+	if !util.IsSupportedCurrency(value) {
+		return fmt.Errorf("currency not supported")
 	}
 	return nil
 }
