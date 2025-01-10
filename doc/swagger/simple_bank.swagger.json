@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Simple Bank",
-    "version": "1.0",
+    "version": "1.1",
     "contact": {
       "url": "https://github.com/AhmadJavaidWork/simple-bank"
     }
@@ -21,6 +21,8 @@
   "paths": {
     "/v1/create_user": {
       "post": {
+        "summary": "Create new user",
+        "description": "Use this API to create a new user",
         "operationId": "SimpleBank_CreateUser",
         "responses": {
           "200": {
@@ -53,6 +55,8 @@
     },
     "/v1/login_user": {
       "post": {
+        "summary": "Login user",
+        "description": "Use this API to login user and get the access token \u0026 refresh token",
         "operationId": "SimpleBank_LoginUser",
         "responses": {
           "200": {
@@ -85,6 +89,8 @@
     },
     "/v1/token/renew_access": {
       "post": {
+        "summary": "Renew Access Token",
+        "description": "Use this API to renew the access token",
         "operationId": "SimpleBank_RenewAccessToken",
         "responses": {
           "200": {
