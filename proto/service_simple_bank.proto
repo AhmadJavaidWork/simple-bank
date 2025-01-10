@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package pb;
 
+import "google/api/annotations.proto";
 import "rpc_create_user.proto";
 import "rpc_login_user.proto";
 import "rpc_renew_access_token.proto";
@@ -10,7 +11,22 @@ option go_package = "github.com/ahmadjavaidwork/simple-bank/pb";
 
 
 service SimpleBank {
-    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
-    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {}
-    rpc RenewAccessToken (RenewAccessTokenRequest) returns (RenewAccessTokenResponse) {}
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/create_user"
+            body: "*"
+        };
+    }
+    rpc LoginUser (LoginUserRequest) returns (LoginUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/login_user"
+            body: "*"
+        };
+    }
+    rpc RenewAccessToken (RenewAccessTokenRequest) returns (RenewAccessTokenResponse) {
+        option (google.api.http) = {
+            post: "/v1/token/renew_access"
+            body: "*"
+        };
+    }
 }
