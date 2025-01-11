@@ -24,6 +24,7 @@ const (
 	SimpleBank_LoginUser_FullMethodName        = "/pb.SimpleBank/LoginUser"
 	SimpleBank_RenewAccessToken_FullMethodName = "/pb.SimpleBank/RenewAccessToken"
 	SimpleBank_CreateAccount_FullMethodName    = "/pb.SimpleBank/CreateAccount"
+	SimpleBank_GetAccount_FullMethodName       = "/pb.SimpleBank/GetAccount"
 	SimpleBank_ListAccount_FullMethodName      = "/pb.SimpleBank/ListAccount"
 	SimpleBank_CreateTransfer_FullMethodName   = "/pb.SimpleBank/CreateTransfer"
 )
@@ -37,6 +38,7 @@ type SimpleBankClient interface {
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	RenewAccessToken(ctx context.Context, in *RenewAccessTokenRequest, opts ...grpc.CallOption) (*RenewAccessTokenResponse, error)
 	CreateAccount(ctx context.Context, in *CreateAccountRequest, opts ...grpc.CallOption) (*CreateAccountResponse, error)
+	GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*GetAccountResponse, error)
 	ListAccount(ctx context.Context, in *ListAccountRequest, opts ...grpc.CallOption) (*ListAccountResponse, error)
 	CreateTransfer(ctx context.Context, in *CreateTransferRequest, opts ...grpc.CallOption) (*CreateTransferResponse, error)
 }
@@ -99,6 +101,16 @@ func (c *simpleBankClient) CreateAccount(ctx context.Context, in *CreateAccountR
 	return out, nil
 }
 
+func (c *simpleBankClient) GetAccount(ctx context.Context, in *GetAccountRequest, opts ...grpc.CallOption) (*GetAccountResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAccountResponse)
+	err := c.cc.Invoke(ctx, SimpleBank_GetAccount_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *simpleBankClient) ListAccount(ctx context.Context, in *ListAccountRequest, opts ...grpc.CallOption) (*ListAccountResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListAccountResponse)
@@ -128,6 +140,7 @@ type SimpleBankServer interface {
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	RenewAccessToken(context.Context, *RenewAccessTokenRequest) (*RenewAccessTokenResponse, error)
 	CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error)
+	GetAccount(context.Context, *GetAccountRequest) (*GetAccountResponse, error)
 	ListAccount(context.Context, *ListAccountRequest) (*ListAccountResponse, error)
 	CreateTransfer(context.Context, *CreateTransferRequest) (*CreateTransferResponse, error)
 	mustEmbedUnimplementedSimpleBankServer()
@@ -154,6 +167,9 @@ func (UnimplementedSimpleBankServer) RenewAccessToken(context.Context, *RenewAcc
 }
 func (UnimplementedSimpleBankServer) CreateAccount(context.Context, *CreateAccountRequest) (*CreateAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateAccount not implemented")
+}
+func (UnimplementedSimpleBankServer) GetAccount(context.Context, *GetAccountRequest) (*GetAccountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAccount not implemented")
 }
 func (UnimplementedSimpleBankServer) ListAccount(context.Context, *ListAccountRequest) (*ListAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAccount not implemented")
@@ -272,6 +288,24 @@ func _SimpleBank_CreateAccount_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SimpleBank_GetAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAccountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SimpleBankServer).GetAccount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SimpleBank_GetAccount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SimpleBankServer).GetAccount(ctx, req.(*GetAccountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SimpleBank_ListAccount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListAccountRequest)
 	if err := dec(in); err != nil {
@@ -334,6 +368,10 @@ var SimpleBank_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateAccount",
 			Handler:    _SimpleBank_CreateAccount_Handler,
+		},
+		{
+			MethodName: "GetAccount",
+			Handler:    _SimpleBank_GetAccount_Handler,
 		},
 		{
 			MethodName: "ListAccount",
