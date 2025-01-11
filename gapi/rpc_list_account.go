@@ -50,10 +50,10 @@ func (server *Server) ListAccount(
 func validateListAccountRequest(
 	req *pb.ListAccountRequest,
 ) (violations []*errdetails.BadRequest_FieldViolation) {
-	if err := val.ValidateInt(int(req.GetPageId()), 1, math.MaxInt32); err != nil {
+	if err := val.ValidateInt(req.GetPageId(), 1, math.MaxInt32); err != nil {
 		violations = append(violations, fieldViolation("page_size", err))
 	}
-	if err := val.ValidateInt(int(req.GetPageSize()), 5, 10); err != nil {
+	if err := val.ValidateInt(req.GetPageSize(), 5, 10); err != nil {
 		violations = append(violations, fieldViolation("page_id", err))
 	}
 	return violations

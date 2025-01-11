@@ -62,7 +62,7 @@ func ValidateCurrency(value string) error {
 	return nil
 }
 
-func ValidateInt(value int, min, max int) error {
+func ValidateInt[V int32 | int64](value V, min, max V) error {
 	if value < min || value > max {
 		return fmt.Errorf("must be between %d - %d", min, max)
 	}
